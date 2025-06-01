@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Aprenda Python</title>
+</head>
+<body>
+    <header>
+        <h1>APF - Aprenda Python Facilmente</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="equipe.html">Sobre a Equipe</a></li>
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Fundamentos de Python</a>
+                <div class="dropdown-content">
+                    <a href="python_fundamentos.html#es">Estruturas de Seleção</a>
+                    <a href="python_fundamentos.html#ep">Estruturas de Repetição</a>
+                    <a href="python_fundamentos.html#vm">Vetores e Matrizes</a>
+                    <a href="python_fundamentos.html#fp">Funções e Procedimentos</a>
+                    <a href="python_fundamentos.html#tx">Tratamento de Exceções</a>
+                </div>
+            </li>
+            <li><a href="tirar_duvidas.html">Tirar Dúvidas (Gemini)</a></li>
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Dicionário de Termos</a>
+                <div class="dropdown-content">
+                    <a href="dicionario.html">Visualizar Termos</a>
+                    <a href="dicionario_formulario.html">Adicionar Termo</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+    <main>
+      #adicionar main
+    </main>
+<section id="es">
+    <h2>Estruturas de Seleção</h2>
+    <h3>Conceito</h3>
+  <p>A estrutura de seleção (ou estrutura condicional) é um bloco de código que escolhe executar uma ação entre duas ou mais possíveis, com base em uma condição.
+    <br>
+    <br>
+  Ela permite que o programa tome decisões, como:
+    <br>
+    <br>
+"Se algo acontecer, faça isso. Caso contrário, faça aquilo."
+  </p>
+    <h3>Aplicação</h3>
+  <p>Onde se aplica? <br> <br>
+Verificar permissões de acesso <br>
+    <br>
+Mostrar conteúdos diferentes dependendo do usuário <br>
+    <br>
+Criar menus ou rotas diferentes em um site <br>
+    <br>
+Validar dados de entrada <br>
+    <br>
+Controlar fluxos lógicos (ex: se o arquivo existe, se a lista está vazia...)
+</p>
+  <br>
+  <p>Exemplos práticos:</p>
+  <h4>
+     Verificar idade:
+  </h4>
+  <pre><code>
+idade = 18
+if idade >= 18:
+    print("Você é maior de idade.")
+else:
+    print("Você é menor de idade.")
+    </code></pre>
+  <h4>
+    Menu de opções:
+  </h4>
+  <pre><code>
+opcao = input("Escolha [1] Iniciar | [2] Sair: ")
+if opcao == "1":
+    print("Iniciando...")
+elif opcao == "2":
+    print("Saindo...")
+else:
+    print("Opção inválida.")
+    </code></pre>
+  <br>
+</section>
+    <br>
+    <hr>
+    <br>
+    <section id="ep">
+      <h2>Estrutura de Repeticao</h2>
+    <h3>Conceito</h3>
+    <p>Estrutura de repetição (também chamada de laço ou loop) é um conceito da programação que permite executar um bloco de código várias vezes, de forma automática e controlada.</p>
+
+    <h3>Aplicação</h3>
+    <p>A estrutura de repetição é aplicada sempre que você precisa executar um mesmo conjunto de instruções várias vezes. Aqui estão alguns exemplos práticos e situações comuns onde ela é usada:</p>
+    <h4>Percorrer listas, duplas ou dicionários
+Você pode usar for para acessar cada item de uma lista ou dicionário.</h4>
+  <pre><code>
+nomes = ["Ana", "Carlos", "Beatriz"]
+for nome in nomes:
+    print("Olá,", nome)
+    </code></pre>
+  <h4>
+    Executar ações até uma condição mudar
+Ideal com while, como em validação de entrada.
+  </h4>
+  <pre><code>
+senha = ""
+while senha != "python123":
+    senha = input("Digite a senha correta: ")
+
+    </code></pre>
+    <h3>Exemplo de Código:</h3>
+    <h4>Repetição com contador (laço "for")
+
+Executa um número determinado de vezes.
+    </h4>
+  <pre><code>
+for i in range(5):  # repete 5 vezes (0 a 4)
+    print(i)
+    </code></pre>
+  <h4>Repetição condicional (laço "while")
+
+Repete enquanto uma condição for verdadeira.
+    </h4>
+  <pre><code>
+x = 0
+while x < 5:
+    print(x)
+    x += 1
+    </code></pre>
+</section>
+    <br>
+    <hr>
+    <br>
+    <section>
+      <section id="vm">
+      <h2>Vetores e Matriz</h2>
+    <h3>Conceito</h3>
+        <h4>Vetor</h4>
+        <p>Um vetor é uma sequência de dados organizados em uma única linha, onde cada elemento pode ser acessado por um índice.</p>
+        <h4>Aplicação:</h4>
+        <pre><code>
+vetor = [10, 20, 30, 40]
+print(vetor[0])  # Acessa o primeiro elemento (10)
+    </code></pre>
+        <h4>Matriz</h4>
+        <p>Uma matriz é como uma tabela, com linhas e colunas. É um vetor de vetores.</p>
+        <h4>Aplicação:</h4>
+        <pre><code>
+matriz = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+print(matriz[0][1])  # Acessa o valor 2 (linha 0, coluna 1)
+    </code></pre>
+      </section>
+      <br>
+      <hr>
+<section id="fp">
+  <h2>Funções e Procedimentos</h2>
+    <h3>Conceito:</h3>
+    <p>Funções e procedimentos são blocos de código reutilizáveis criados para executar tarefas específicas em um programa.
+      <br>
+      Eles ajudam a organizar, reaproveitar e modularizar o código.</p>
+    <h4>Aplicação de uma função</h4>
+      <p>Uma função realiza uma tarefa e retorna um valor.</p>
+  <pre><code>
+    def somar(a, b):
+    return a + b
+
+resultado = somar(3, 5)
+print(resultado)  # Saída: 8
+  </code></pre>
+  <h4>Aplicação de um procedimento</h4>
+      <p>É uma função que apenas executa ações, sem retornar valor (o foco é o efeito, não o resultado).</p>
+  <pre><code>
+def saudacao(nome):
+    print(f"Olá, {nome}!")
+
+saudacao("Lucas")
+  </code></pre>
+</section>
+      <br>
+      <hr>
+      <br>
+  <section id="tx">
+    <h2>Tratamento de Exceções</h2>
+    <h3>Conceito:</h3>
+    <p>O tratamento de exceções é um mecanismo da programação que permite lidar com erros de forma controlada, evitando que o programa pare de funcionar bruscamente.</p>
+    <p>Sem tratamento de exceções, qualquer erro (ex: divisão por zero, dado inválido, arquivo ausente) faz o programa travar. Com o tratamento, você pode:
+      <br>
+
+Mostrar mensagens amigáveis.<br> <br>
+
+Corrigir o problema automaticamente. <br> <br>
+
+Ignorar ou registrar o erro.</p>
+
+<h2>Sintaxe em Python:</h2>
+    <pre><code>
+try:
+    # código que pode gerar erro
+    resultado = 10 / 0
+except ZeroDivisionError:
+    # o que fazer se der erro
+    print("Não é possível dividir por zero.")
+    </code></pre>
+    <h2>Exemplo com entrada de dados:</h2>
+    <pre><code>
+      try:
+    numero = int(input("Digite um número: "))
+    print("Você digitou:", numero)
+except ValueError:
+    print("Erro: Isso não é um número inteiro.")
+
+    </code></pre>
+  </section>
+
+
+<footer>
+        <p>&copy; 2025. APF.Fundamentos de Programação.</p>
+    </footer>
+</body>
+</html>
