@@ -1,6 +1,6 @@
-    const response = await fetch("{{ url_for('tirar_duvidas_route') }}", { /* ... */ });
+const response = await fetch("{{ url_for('tirar_duvidas_route') }}", { /* ... */ });
 
-    document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
     const loadingOverlay = document.getElementById('loading-overlay');
 
     const navigationLinks = document.querySelectorAll('a:not([href^="#"]):not([target="_blank"]):not([href*="javascript:void(0)"])');
@@ -34,3 +34,7 @@
         }
     });
 });
+
+<script src="{{ url_for('static', filename='new.js') }}"></script>
+</body>
+</html>
