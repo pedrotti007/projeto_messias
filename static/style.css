@@ -1,3 +1,7 @@
+html, body {
+    height: 100%;
+}
+
 body {
     font-family: Questrial-Regular, sans-serif ;
     line-height: 1.6;
@@ -5,7 +9,9 @@ body {
     padding: 0;
     background-color: #f4f4f4;
     color: #333;
-
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
@@ -102,6 +108,9 @@ main {
     background: #fff;
     border-radius: 5px;
     font-family: Questrial-Regular, sans-serif ;
+    width: 95%; /* Garante que o main ocupe quase toda a tela em telas pequenas */
+    box-sizing: border-box;
+    flex: 1;
 }
 
 footer {
@@ -109,7 +118,7 @@ footer {
     padding: 1rem;
     background: #001f4d;
     color: #fff;
-    margin-top: 20px;
+    margin-top: 40px; /* aumente para mais espaço */
     font-family: Questrial-Regular, sans-serif ;
 }
 
