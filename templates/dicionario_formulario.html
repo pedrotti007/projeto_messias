@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Adicionar Termo ao Dicionário - APF</title>
+</head>
+<body>
+<div id="loading-overlay">
+    <div id="loading-text">carregando...</div>
+</div>
+    <header>
+        <h1>APF - Aprenda Python Facilmente</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Início</a></li>
+            <li><a href="{{ url_for('equipe_page') }}">Sobre a Equipe</a></li>
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Fundamentos de Python</a>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('python_fundamentos_page', _anchor='estruturas-selecao') }}">Estruturas de Seleção</a>
+                    <a href="{{ url_for('python_fundamentos_page', _anchor='estruturas-repeticao') }}">Estruturas de Repetição</a>
+                    <a href="{{ url_for('python_fundamentos_page', _anchor='vetores-matrizes') }}">Vetores e Matrizes</a>
+                    <a href="{{ url_for('python_fundamentos_page', _anchor='funcoes-procedimentos') }}">Funções e Procedimentos</a>
+                    <a href="{{ url_for('python_fundamentos_page', _anchor='tratamento-excecoes') }}">Tratamento de Exceções</a>
+                </div>
+            </li>
+            <li><a href="{{ url_for('tirar_duvidas_route') }}">Utilize a IA!(Gemini)</a></li>
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Dicionário de Termos</a>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('dicionario_page') }}">Visualizar Termos</a>
+                    <a href="{{ url_for('dicionario_formulario_page') }}">Adicionar Termo</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+    <main>
+
+        <h2>Adicionar Novo Termo ao Dicionário</h2>
+        <form action="{{ url_for('dicionario_formulario_page') }}" method="post">
+            <div>
+                <label for="termo">Termo:</label>
+                <input type="text" id="termo" name="termo" required>
+            </div>
+            <div>
+                <label for="definicao">Definição:</label>
+                <textarea id="definicao" name="definicao" rows="4" required></textarea>
+            </div>
+            <button type="submit">Adicionar Termo</button>
+        </form>
+
+    </main>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <footer>
+        <p>&copy; 2025. APF.Fundamentos de Programação.</p>
+    </footer>
+</body>
+</html>

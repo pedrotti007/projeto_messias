@@ -1,67 +1,157 @@
 
-from google import genai
+from flask import Flask, request, jsonify, render_template, redirect, url_for
+import google.generativeai as genai
+import os
+from dotenv import load_dotenv
 
-client = genai.Client(api_key="AIzaSyBub0nEbWIC16FEBhG5w5DV9Oj2KV9km08")
 
-response = client.models.generate_content(
-    model="gemini-2.0-flash",
-    contents="Explain how AI works in a few words",
-)
-
-print(response.text)
-
-def carregar_termos():
-    termos = {}
-    try:
-        with open("/DATA/dicionario.txt", "r", encoding="utf-8") as f:
-            for linha in f:
-                if '|' in linha:
-                    termo, definicao = linha.strip().split('|', 1)
-                    termos[termo] = definicao
-    except FileNotFoundError:
-        pass
-    return termos
-
-def salvar_termos(termos):
-    with open("/DATA/dicionario.txt ", "w", encoding="utf-8") as f:
-        for termo, definicao in termos.items():
-            f.write(f"{termo}|{definicao}\n")
-from flask import Flask, render_template, request, redirect, url_for
+load_dotenv()
 
 app = Flask(__name__)
 
-@app.route("/dicionario")
-def dicionario():
-    termos = carregar_termos()
-    return render_template("dicionario.html", termos=termos)
 
-@app.route("/adicionar", methods=["GET", "POST"])
-def adicionar():
-    if request.method == "POST":
-        termo = request.form["termo"].strip()
-        definicao = request.form["definicao"].strip()
-        termos = carregar_termos()
-        termos[termo] = definicao
-        salvar_termos(termos)
-        return redirect(url_for("dicionario"))
-    return render_template("adicionar.html")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+gemini_model = None
 
-@app.route("/editar/<termo>", methods=["GET", "POST"])
-def editar(termo):
-    termos = carregar_termos()
-    if request.method == "POST":
-        nova_definicao = request.form["definicao"]
-        termos[termo] = nova_definicao
-        salvar_termos(termos)
-        return redirect(url_for("dicionario"))
-    definicao = termos.get(termo, "")
-    return render_template("editar.html", termo=termo, definicao=definicao)
+if not GEMINI_API_KEY:
+    print("ERRO CRÍTICO: A variável de ambiente GEMINI_API_KEY não está configurada.")
+else:
+    try:
+        genai.configure(api_key=GEMINI_API_KEY)
+        generation_config = {
+            "temperature": 0.7,
+            "top_p": 1,
+            "top_k": 1,
+            "max_output_tokens": 2048,
+        }
+        safety_settings = [
+            {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
+            {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
+            {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
+            {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
+        ]
+        gemini_model = genai.GenerativeModel(
+            model_name="gemini-1.5-flash-latest",
+            generation_config=generation_config,
+            safety_settings=safety_settings
+        )
+        print("Modelo Gemini inicializado com sucesso.")
+    except Exception as e:
+        print(f"Erro ao inicializar o modelo Gemini: {e}")
 
-@app.route("/deletar/<termo>")
-def deletar(termo):
-    termos = carregar_termos()
-    if termo in termos:
-        del termos[termo]
-        salvar_termos(termos)
-    return redirect(url_for("dicionario"))
 
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/tirar_duvidas', methods=['GET', 'POST'])
+def tirar_duvidas_route():
+    if request.method == 'POST':
+        if not gemini_model:
+            return jsonify({
+                               "error": "O serviço de IA não está disponível no momento. Verifique a configuração da API Key e os logs do servidor."}), 503
+
+        try:
+            data = request.get_json()
+            if not data or 'pergunta' not in data:
+                return jsonify({"error": "Nenhuma pergunta fornecida."}), 400
+
+            pergunta_usuario = data['pergunta'].strip()
+            if not pergunta_usuario:
+                return jsonify({"error": "A pergunta não pode estar vazia."}), 400
+
+            prompt_parts = [
+                "Contexto: Você é um assistente virtual do site 'APF - Aprenda Python Facilmente'. Responda perguntas sobre Python, programação e tópicos relacionados de forma clara e útil para iniciantes.",
+                f"Pergunta do usuário: {pergunta_usuario}",
+                "Resposta:"
+            ]
+
+            response = gemini_model.generate_content(prompt_parts)
+
+            resposta_texto = ""
+            if response.parts:
+                for part in response.parts:
+                    resposta_texto += part.text
+            elif hasattr(response, 'text') and response.text:
+                resposta_texto = response.text
+            else:
+                if response.prompt_feedback and response.prompt_feedback.block_reason:
+                    resposta_texto = f"Não foi possível gerar uma resposta devido a: {response.prompt_feedback.block_reason_message or response.prompt_feedback.block_reason}"
+                else:
+                    resposta_texto = "Não foi possível obter uma resposta do modelo Gemini (resposta vazia ou bloqueada sem motivo claro)."
+                print(f"Resposta completa do Gemini (ou feedback): {response}")
+
+            return jsonify({"resposta": resposta_texto})
+
+        except Exception as e:
+            print(f"Erro ao processar pergunta com Gemini: {e}")
+            return jsonify({"error": "Ocorreu um erro interno ao processar sua pergunta."}), 500
+
+
+    return render_template('tirar_duvidas.html')
+
+
+@app.route('/equipe')
+def equipe_page():
+    return render_template('equipe.html')
+
+@app.route('/python_fundamentos')
+def python_fundamentos_page():
+    return render_template('python_fundamentos.html')
+
+termos_dicionario = [
+    {"termo": "Variável", "definicao": "Um espaço na memória do computador destinado a um dado que pode ser modificado durante a execução de um programa."},
+    {"termo": "Função", "definicao": "Um bloco de código que realiza uma tarefa específica e pode ser chamado várias vezes."},
+    {"termo": "Loop (Laço)", "definicao": "Uma estrutura de controle que repete um bloco de código várias vezes enquanto uma condição for verdadeira ou por um número definido de vezes."}
+]
+
+@app.route('/dicionario')
+def dicionario_page():
+    return render_template('dicionario.html', termos=termos_dicionario)
+
+@app.route('/dicionario_formulario', methods=['GET', 'POST'])
+def dicionario_formulario_page():
+    if request.method == 'POST':
+        novo_termo = request.form.get('termo')
+        nova_definicao = request.form.get('definicao')
+
+        if novo_termo and nova_definicao:
+            termos_dicionario.append({'termo': novo_termo, 'definicao': nova_definicao})
+            return redirect(url_for('dicionario_page'))
+        else:
+            return render_template('dicionario_formulario.html', error="Ambos os campos são obrigatórios.")
+
+    return render_template('dicionario_formulario.html')
+
+@app.route('/editar_termo/<int:index>', methods=['GET', 'POST'])
+def editar_termo_page(index):
+    if not (0 <= index < len(termos_dicionario)):
+        return redirect(url_for('dicionario_page'))
+
+    termo_para_editar = termos_dicionario[index]
+
+    if request.method == 'POST':
+        termo_atualizado = request.form.get('termo')
+        definicao_atualizada = request.form.get('definicao')
+
+        if termo_atualizado and definicao_atualizada:
+            termos_dicionario[index]['termo'] = termo_atualizado
+            termos_dicionario[index]['definicao'] = definicao_atualizada
+            return redirect(url_for('dicionario_page'))
+        else:
+            return render_template('editar_termo.html', termo_para_editar=termo_para_editar, index=index, error="Ambos os campos são obrigatórios.")
+
+    return render_template('editar_termo.html', termo_para_editar=termo_para_editar, index=index)
+
+
+@app.route('/excluir_termo/<int:index>')
+def excluir_termo_page(index):
+
+    if 0 <= index < len(termos_dicionario):
+
+        termos_dicionario.pop(index)
+
+    return redirect(url_for('dicionario_page'))
+
+if __name__ == '__main__':
+    app.run(debug=True)

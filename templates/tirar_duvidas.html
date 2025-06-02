@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Aprenda Python - Tire Dúvidas com IA</title>
+</head>
+<body>
+<div id="loading-overlay">
+    <div id="loading-text">carregando...</div>
+</div>
+    <header>
+        <h1>APF - Aprenda Python Facilmente</h1>
+    </header>
+    <nav>
+        <ul>
+
+            <li><a href="{{ url_for('index') }}">Início</a></li>
+            <li><a href="{{ url_for('equipe_page') }}">Sobre a Equipe</a></li>
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Fundamentos de Python</a>
+                <div class="dropdown-content">
+
+                    <a href="{{ url_for('python_fundamentos_page', _anchor='estruturas-selecao') }}">Estruturas de Seleção</a>
+                    <a href="{{ url_for('python_fundamentos_page', _anchor='estruturas-repeticao') }}">Estruturas de Repetição</a>
+                    <a href="{{ url_for('python_fundamentos_page', _anchor='vetores-matrizes') }}">Vetores e Matrizes</a>
+                    <a href="{{ url_for('python_fundamentos_page', _anchor='funcoes-procedimentos') }}">Funções e Procedimentos</a>
+                    <a href="{{ url_for('python_fundamentos_page', _anchor='tratamento-excecoes') }}">Tratamento de Exceções</a>
+                </div>
+            </li>
+            <li><a href="{{ url_for('tirar_duvidas_route') }}">Utilize a IA!(Gemini)</a></li>
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Dicionário de Termos</a>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('dicionario_page') }}">Visualizar Termos</a>
+                    <a href="{{ url_for('dicionario_formulario_page') }}">Adicionar Termo</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+    <main>
+
+    </main>
+    <section id="tirar-duvidas">
+        <h2>Utilize a IA para tirar suas dúvidas!</h2>
+        <form id="gemini-form">
+            <label for="pergunta">Sua pergunta:</label>
+            <textarea id="pergunta" name="pergunta" rows="4" required></textarea>
+            <button type="submit">Enviar Pergunta</button>
+        </form>
+
+        <div class="resposta-gemini">
+            <h3>Resposta:</h3>
+            <p id="gemini-response-text">Aguardando sua pergunta...</p>
+        </div>
+    </section>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <footer>
+        <p>&copy; 2025. APF.Fundamentos de Programação.</p>
+    </footer>
+
+    <script>
+        document.getElementById('gemini-form').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Impede o envio tradicional do formulário
+
+            const perguntaTextarea = document.getElementById('pergunta');
+            const pergunta = perguntaTextarea.value;
+            const responseParagraph = document.getElementById('gemini-response-text');
+            const submitButton = this.querySelector('button[type="submit"]');
+
+            if (!pergunta.trim()) {
+                responseParagraph.textContent = 'Por favor, digite uma pergunta.';
+                return;
+            }
+
+            responseParagraph.innerHTML = 'Processando sua pergunta... <span class="loading-dots"><span>.</span><span>.</span><span>.</span></span>';
+            submitButton.disabled = true;
+            perguntaTextarea.disabled = true;
+
+            try {
+                // A URL para o endpoint do Flask que processará a pergunta
+                const response = await fetch("{{ url_for('tirar_duvidas_route') }}", { // Esta já estava correta para a funcionalidade da página
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ pergunta: pergunta })
+                });
+
+                if (!response.ok) {
+                    let errorMsg = `Erro do servidor: ${response.status}`;
+                    try {
+                        const errorData = await response.json();
+                        errorMsg = errorData.error || errorData.detail || errorMsg;
+                    } catch (e) {
+                        // Não conseguiu parsear JSON, usa o statusText ou a mensagem padrão
+                        errorMsg = response.statusText || errorMsg;
+                    }
+                    throw new Error(errorMsg);
+                }
+
+                const data = await response.json();
+
+                if (data.resposta) {
+                    // Substitui quebras de linha \n por <br> para exibição correta no HTML
+                    responseParagraph.innerHTML = data.resposta.replace(/\n/g, '<br>');
+                } else if (data.error) {
+                    responseParagraph.textContent = 'Erro: ' + data.error;
+                } else {
+                    responseParagraph.textContent = 'Não foi possível obter uma resposta.';
+                }
+
+            } catch (error) {
+                console.error('Erro ao enviar pergunta:', error);
+                responseParagraph.textContent = 'Ocorreu um erro: ' + error.message;
+            } finally {
+                submitButton.disabled = false;
+                perguntaTextarea.disabled = false;
+                // Opcional: limpar o campo após o envio
+                // perguntaTextarea.value = '';
+            }
+        });
+    </script>
+    <style>
+        .loading-dots span {
+            animation: blink 1.4s infinite both;
+        }
+        .loading-dots span:nth-child(2) {
+            animation-delay: .2s;
+        }
+        .loading-dots span:nth-child(3) {
+            animation-delay: .4s;
+        }
+        @keyframes blink {
+            0% { opacity: .2; }
+            20% { opacity: 1; }
+            100% { opacity: .2; }
+        }
+    </style>
+
+</body>
+</html>

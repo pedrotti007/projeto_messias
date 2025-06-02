@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Dicionário de Termos - APF</title>
+    <style>
+        .termo-item {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .termo-item strong {
+            font-size: 1.1em;
+        }
+        .actions a {
+            margin-right: 10px;
+            text-decoration: none;
+            /* color: #007bff; */ /* Movido para classes específicas */
+        }
+        .actions a:hover {
+            text-decoration: underline;
+        }
+        .edit-link {
+            color: #007bff; /* Azul para editar */
+        }
+        .delete-link {
+            color: #dc3545; /* Vermelho para excluir */
+        }
+    </style>
+</head>
+<body>
+<div id="loading-overlay">
+    <div id="loading-text">carregando...</div>
+</div>
+    <header>
+        <h1>APF - Aprenda Python Facilmente</h1>
+    </header>
+    <nav>
+
+        <ul>
+            <li><a href="{{ url_for('index') }}">Início</a></li>
+            <li><a href="{{ url_for('equipe_page') }}">Sobre a Equipe</a></li>
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Fundamentos de Python</a>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('python_fundamentos_page', _anchor='estruturas-selecao') }}">Estruturas de Seleção</a>
+                    <a href="{{ url_for('python_fundamentos_page', _anchor='estruturas-repeticao') }}">Estruturas de Repetição</a>
+                    <a href="{{ url_for('python_fundamentos_page', _anchor='vetores-matrizes') }}">Vetores e Matrizes</a>
+                    <a href="{{ url_for('python_fundamentos_page', _anchor='funcoes-procedimentos') }}">Funções e Procedimentos</a>
+                    <a href="{{ url_for('python_fundamentos_page', _anchor='tratamento-excecoes') }}">Tratamento de Exceções</a>
+                </div>
+            </li>
+            <li><a href="{{ url_for('tirar_duvidas_route') }}">Utilize a IA!(Gemini)</a></li>
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Dicionário de Termos</a>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('dicionario_page') }}">Visualizar Termos</a>
+                    <a href="{{ url_for('dicionario_formulario_page') }}">Adicionar Termo</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+    <main>
+        <h2>Dicionário de Termos de Python</h2>
+
+        {% if termos %}
+            <div>
+                {% for item in termos %}
+                    <div class="termo-item">
+                        <p><strong>{{ item.termo }}</strong></p>
+                        <p>{{ item.definicao }}</p>
+                        <div class="actions">
+                            <a href="{{ url_for('editar_termo_page', index=loop.index0) }}" class="edit-link">Editar</a>
+
+                            <a href="{{ url_for('excluir_termo_page', index=loop.index0) }}"
+                               class="delete-link"
+                               onclick="return confirm('Tem certeza que deseja excluir este termo?');">Excluir</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Nenhum termo adicionado ao dicionário ainda.</p>
+        {% endif %}
+
+        <p style="margin-top: 20px;">
+            <a href="{{ url_for('dicionario_formulario_page') }}" class="btn">Adicionar Novo Termo</a>
+        </p>
+    </main>
+    <br>
+    <br>
+    <footer>
+        <p>&copy; 2025. APF.Fundamentos de Programação.</p>
+    </footer>
+</body>
+</html>

@@ -3,41 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/style.css">
-    <title>Aprenda Python</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Fundamentos de Python - APF</title>
 </head>
 <body>
+<div id="loading-overlay">
+    <div id="loading-text">carregando...</div>
+</div>
     <header>
         <h1>APF - Aprenda Python Facilmente</h1>
     </header>
     <nav>
         <ul>
-            <li><a href="index.html">Início</a></li>
-            <li><a href="equipe.html">Sobre a Equipe</a></li>
+            <li><a href="{{ url_for('index') }}">Início</a></li>
+            <li><a href="{{ url_for('equipe_page') }}">Sobre a Equipe</a></li>
             <li class="dropdown">
                 <a href="javascript:void(0)" class="dropbtn">Fundamentos de Python</a>
                 <div class="dropdown-content">
-                    <a href="python_fundamentos.html#es">Estruturas de Seleção</a>
-                    <a href="python_fundamentos.html#ep">Estruturas de Repetição</a>
-                    <a href="python_fundamentos.html#vm">Vetores e Matrizes</a>
-                    <a href="python_fundamentos.html#fp">Funções e Procedimentos</a>
-                    <a href="python_fundamentos.html#tx">Tratamento de Exceções</a>
+                    <a href="{{ url_for('python_fundamentos_page', _anchor='es') }}">Estruturas de Seleção</a>
+                    <a href="{{ url_for('python_fundamentos_page', _anchor='ep') }}">Estruturas de Repetição</a>
+                    <a href="{{ url_for('python_fundamentos_page', _anchor='vm') }}">Vetores e Matrizes</a>
+                    <a href="{{ url_for('python_fundamentos_page', _anchor='fp') }}">Funções e Procedimentos</a>
+                    <a href="{{ url_for('python_fundamentos_page', _anchor='') }}">Tratamento de Exceções</a>
                 </div>
             </li>
-            <li><a href="tirar_duvidas.html">Utilize a IA!(Gemini)</a></li>
+            <li><a href="{{ url_for('tirar_duvidas_route') }}">Utilize a IA!(Gemini)</a></li>
             <li class="dropdown">
                 <a href="javascript:void(0)" class="dropbtn">Dicionário de Termos</a>
                 <div class="dropdown-content">
-                    <a href="dicionario.html">Visualizar Termos</a>
-                    <a href="dicionario_formulario.html">Adicionar Termo</a>
+                    <a href="{{ url_for('dicionario_page') }}">Visualizar Termos</a>
+                    <a href="{{ url_for('dicionario_formulario_page') }}">Adicionar Termo</a>
                 </div>
             </li>
         </ul>
     </nav>
-    <main>
-      #adicionar main
-    </main>
-<section id="es">
+    <section id="es">
     <h2>Estruturas de Seleção</h2>
     <h3>Conceito</h3>
   <p>A estrutura de seleção (ou estrutura condicional) é um bloco de código que escolhe executar uma ação entre duas ou mais possíveis, com base em uma condição.
@@ -220,9 +220,7 @@ except ValueError:
 
     </code></pre>
   </section>
-
-
-<footer>
+    <footer>
         <p>&copy; 2025. APF.Fundamentos de Programação.</p>
     </footer>
 </body>
