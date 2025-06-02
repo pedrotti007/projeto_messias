@@ -5,11 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>Fundamentos de Python - APF</title>
+    <style>
+        .sticky-top-container {
+            position: -webkit-sticky; /* Para compatibilidade com Safari */
+            position: sticky;
+            top: 0; /* Fixa no topo da viewport */
+            z-index: 1000; /* Garante que fique acima de outros conteúdos */
+            /*
+               Adicione uma cor de fundo para o container.
+               Isso é importante para que o conteúdo da página, ao rolar por baixo,
+               não apareça através do header/nav se eles tiverem partes transparentes
+               ou se houver algum espaçamento.
+               Ajuste 'white' para a cor de fundo do seu tema, se necessário.
+            */
+            background-color: white;
+        }
+    </style>
 </head>
 <body>
 <div id="loading-overlay">
     <div id="loading-text">carregando...</div>
 </div>
+
+<div class="sticky-top-container">
     <header>
         <h1>APF - Aprenda Python Facilmente</h1>
     </header>
@@ -24,7 +42,7 @@
                     <a href="{{ url_for('python_fundamentos_page', _anchor='ep') }}">Estruturas de Repetição</a>
                     <a href="{{ url_for('python_fundamentos_page', _anchor='vm') }}">Vetores e Matrizes</a>
                     <a href="{{ url_for('python_fundamentos_page', _anchor='fp') }}">Funções e Procedimentos</a>
-                    <a href="{{ url_for('python_fundamentos_page', _anchor='') }}">Tratamento de Exceções</a>
+                    <a href="{{ url_for('python_fundamentos_page', _anchor='tx') }}">Tratamento de Exceções</a>
                 </div>
             </li>
             <li><a href="{{ url_for('tirar_duvidas_route') }}">Utilize a IA!(Gemini)</a></li>
@@ -37,6 +55,8 @@
             </li>
         </ul>
     </nav>
+</div>
+
     <section id="es">
     <h2>Estruturas de Seleção</h2>
     <h3>Conceito</h3>
@@ -136,8 +156,7 @@ while x < 5:
     <br>
     <hr>
     <br>
-    <section>
-      <section id="vm">
+    <section id="vm">
       <h2>Vetores e Matriz</h2>
     <h3>Conceito</h3>
         <h4>Vetor</h4>
@@ -201,7 +220,7 @@ Corrigir o problema automaticamente. <br> <br>
 
 Ignorar ou registrar o erro.</p>
 
-<h2>Sintaxe em Python:</h2>
+    <h3>Sintaxe em Python:</h3>
     <pre><code>
 try:
     # código que pode gerar erro
@@ -210,7 +229,7 @@ except ZeroDivisionError:
     # o que fazer se der erro
     print("Não é possível dividir por zero.")
     </code></pre>
-    <h2>Exemplo com entrada de dados:</h2>
+    <h3>Exemplo com entrada de dados:</h3>
     <pre><code>
       try:
     numero = int(input("Digite um número: "))
