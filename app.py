@@ -13,6 +13,8 @@ app = Flask(__name__)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 gemini_model = None
 
+# Verificar se o Gemini está funcionando
+
 if not GEMINI_API_KEY:
     print("ERRO CRÍTICO: A variável de ambiente GEMINI_API_KEY não está configurada.")
 else:
@@ -40,9 +42,13 @@ else:
         print(f"Erro ao inicializar o modelo Gemini: {e}")
 
 
+#aqui vamos definir a parte dos templates
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
+#template onde está o gemini, informando se esta fora do ar, ou se está funcionando, ela também relata o erro que aconteceu.
 
 @app.route('/tirar_duvidas', methods=['GET', 'POST'])
 def tirar_duvidas_route():
@@ -50,6 +56,8 @@ def tirar_duvidas_route():
         if not gemini_model:
             return jsonify({
                                "error": "O serviço de IA não está disponível no momento. Verifique a configuração da API Key e os logs do servidor."}), 503
+
+#definindo a mesma, aqui é caso esteja tudo certo, pronta para funcionar. Iremos dizer a sequencia que precisa ser seguida.
 
         try:
             data = request.get_json()
@@ -65,6 +73,8 @@ def tirar_duvidas_route():
                 f"Pergunta do usuário: {pergunta_usuario}",
                 "Resposta:"
             ]
+
+#aqui nos vamos dar sentido e dizer pra ela oque fazer quando nao conseguir responder. Ou problemas de response.
 
             response = gemini_model.generate_content(prompt_parts)
 
@@ -91,6 +101,10 @@ def tirar_duvidas_route():
     return render_template('tirar_duvidas.html')
 
 
+# as @app.route('/....') sao para poder integrar a navegacao entre as paginas. Quando for executada "..._page" ele retorne o arquivo.
+# Ex: def equipe_page():
+#         return render_template('equipe.html')
+
 @app.route('/equipe')
 def equipe_page():
     return render_template('equipe.html')
@@ -104,6 +118,8 @@ termos_dicionario = [
     {"termo": "Função", "definicao": "Um bloco de código que realiza uma tarefa específica e pode ser chamado várias vezes."},
     {"termo": "Loop (Laço)", "definicao": "Uma estrutura de controle que repete um bloco de código várias vezes enquanto uma condição for verdadeira ou por um número definido de vezes."}
 ]
+
+#outra funcionalidade é a integracao da página e também aparecer com algo escrito que quisermos puxando de uma variável.
 
 @app.route('/dicionario')
 def dicionario_page():
