@@ -1,0 +1,2 @@
+variável|É um espaço na memória para armazenar valores.
+função|Um bloco de código reutilizável que executa uma tarefa específica.
