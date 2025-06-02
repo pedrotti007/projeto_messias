@@ -1,6 +1,7 @@
 Projeto Messias 
 Participantes: Pedro Jorge
-               Artur Trajano 
+               Artur Trajano
+               André Coelho
 
 2025.1 - Sistemas para Internet - Noite
 
