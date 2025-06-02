@@ -108,7 +108,7 @@ main {
     background: #fff;
     border-radius: 5px;
     font-family: Questrial-Regular, sans-serif ;
-    width: 95%; /* Garante que o main ocupe quase toda a tela em telas pequenas */
+    width: 95%;
     box-sizing: border-box;
     flex: 1;
 }
@@ -118,7 +118,7 @@ footer {
     padding: 1rem;
     background: #001f4d;
     color: #fff;
-    margin-top: 40px; /* aumente para mais espaço */
+    margin-top: 40px;
     font-family: Questrial-Regular, sans-serif ;
 }
 
@@ -195,23 +195,23 @@ button[type="submit"]:hover, .btn:hover {
     border-left: 5px solid #4CAF50;
     font-family: Questrial-Regular, sans-serif ;
 }
-/* Estilos da Tela de Carregamento */
+
 #loading-overlay {
-    position: fixed; /* Cobre a tela inteira */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: white; /* Fundo branco */
-    z-index: 9999; /* Garante que fique por cima de tudo */
-    display: none; /* Escondido por padrão */
-    justify-content: center; /* Centraliza o texto horizontalmente */
-    align-items: center; /* Centraliza o texto verticalmente */
+    background-color: white;
+    z-index: 9999;
+    display: none;
+    justify-content: center;
+    align-items: center;
     text-align: center;
 }
 
 #loading-text {
-    color: #001f4d; /* Cor do texto: #001f4d */
-    font-size: 24px; /* Tamanho da fonte, ajuste conforme necessário */
-    font-family: 'Questrial-Regular', sans-serif; /* Usa a mesma fonte do seu site */
+    color: #001f4d;
+    font-size: 24px;
+    font-family: 'Questrial-Regular', sans-serif;
 }
